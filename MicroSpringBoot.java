@@ -10,7 +10,7 @@ import java.net.URISyntaxException;
 
 /**
  *
- * @author maria.sanchez-m
+ * @author Juan David Rodríguez
  */
 public class MicroSpringBoot {
 

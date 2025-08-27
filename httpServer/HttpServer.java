@@ -17,7 +17,7 @@ import java.util.logging.Logger;
 
 /**
  *
- * @author maria.sanchez-m
+ * @author Juan David Rodríguez
  */
 public class HttpServer {
 

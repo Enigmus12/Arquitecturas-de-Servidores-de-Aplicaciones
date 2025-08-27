@@ -2,7 +2,7 @@ package co.escuelaing.arep.microspringboot.httpServer;
 
 /**
  *
- * @author maria.sanchez-m
+ * @author Juan David Rodríguez
  */
 public interface Service {
     

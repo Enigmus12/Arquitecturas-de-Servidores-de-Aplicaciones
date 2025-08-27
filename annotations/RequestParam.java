@@ -15,7 +15,7 @@ import java.lang.annotation.Target;
 @Target(ElementType.PARAMETER)
 /**
  *
- * @author maria.sanchez-m
+ * @author Juan David Rodríguez
  */
 public @interface RequestParam {
     public String value() default "Default";

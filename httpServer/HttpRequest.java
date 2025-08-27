@@ -8,7 +8,7 @@ import java.net.URI;
 
 /**
  *
- * @author maria.sanchez-m
+ * @author Juan David Rodríguez
  */
 public class HttpRequest {
     

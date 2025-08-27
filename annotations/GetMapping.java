@@ -15,7 +15,7 @@ import java.lang.annotation.Target;
 @Target(ElementType.METHOD)
 /**
  *
- * @author maria.sanchez-m
+ * @author Juan David Rodríguez
  */
 public @interface GetMapping {
     public String value();

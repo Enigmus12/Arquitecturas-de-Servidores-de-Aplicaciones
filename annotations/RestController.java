@@ -15,7 +15,7 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 /**
  *
- * @author maria.sanchez-m
+ * @author Juan David Rodríguez
  */
 public @interface RestController {
     

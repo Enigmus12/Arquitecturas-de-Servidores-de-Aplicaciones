@@ -10,7 +10,7 @@ import co.escuelaing.arep.microspringboot.annotations.GetMapping;
 import co.escuelaing.arep.microspringboot.annotations.RequestParam;
 /**
  *
- * @author maria.sanchez-m
+ * @author Juan David Rodríguez
  */
 @RestController
 public class GreetingController {
