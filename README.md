@@ -1,5 +1,5 @@
 # MicroSpringBoot
-## 📌 Description
+## Description
 
 This project implements a minimalist web server in Java, similar to Apache but simplified.
 The server is capable of:
@@ -48,7 +48,7 @@ The project contains the following main packages:
         * /sum?x=5&y=7 → Returns the sum of two numbers.
         * /pi → Returns the value of π.
 
-## ⚙️ Installation & Execution
+## Installation & Execution
 Build the project
     mvn clean package
 
@@ -58,7 +58,7 @@ Run the server
 The server will start at:
     http://localhost:8080
 
-## 🌐 Example Endpoints
+## Example Endpoints
 Method	    URI	            Description	                        Example Usage
 GET	        /greeting	    Returns a greeting	                /greeting?name=Juan → Hello Juan
 GET	        /sum	        Returns the sum of two integers	    /sum?x=10&y=5 → Result: 15
@@ -71,7 +71,7 @@ Example:
     http://localhost:8080/images/fondo.jpg
     http://localhost:8080/images/fondo.png
 
-## 📑 Workshop Requirements & Compliance
+## Workshop Requirements & Compliance
 
     ✔ Apache-like Web Server in Java → Implemented in HttpServer.
 
@@ -89,7 +89,7 @@ Example:
  mvn test
 ![alt text](image.png)
 
-## 👨‍💻 Author
+## Author
 
     Juan David Rodríguez
     Academic project for the course Enterprise Architectures (AREP) – Escuela Colombiana de Ingeniería.
