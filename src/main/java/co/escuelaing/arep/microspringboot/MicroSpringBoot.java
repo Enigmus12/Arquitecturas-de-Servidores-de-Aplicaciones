@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- */
-
 package co.escuelaing.arep.microspringboot;
 
 import co.escuelaing.arep.microspringboot.httpServer.HttpServer;
@@ -18,4 +14,5 @@ public class MicroSpringBoot {
         System.out.println("Starting MicroSpringBoot:");
         HttpServer.runServer(args);
     }
+
 }
