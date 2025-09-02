@@ -1,11 +1,10 @@
 function loadGetMsg() {
-    let nameVar = document.getElementById("name").value;
-    const xhttp = new XMLHttpRequest();
-    xhttp.onload = function() {
-        document.getElementById("getrespmsg").innerHTML = this.responseText;
-    }
-    xhttp.open("GET", "/hello?name=" + nameVar);
-    xhttp.send();
+    let name = document.getElementById("name").value;
+    fetch("/greeting?name=" + name)
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById("getrespmsg").innerHTML = data;
+        });
 }
 
 function loadPostMsg() {

@@ -12,7 +12,7 @@ public class MicroSpringBoot {
 
     public static void main(String[] args) throws IOException, URISyntaxException {
         System.out.println("Starting MicroSpringBoot:");
-        HttpServer.runServer(args);
+        HttpServer.runServer();
     }
 
 }

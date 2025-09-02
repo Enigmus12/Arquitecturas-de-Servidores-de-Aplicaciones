@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.nio.charset.StandardCharsets;
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
 
 /**
  *
@@ -98,68 +99,85 @@ public class HttpServer {
 
     // Método para iniciar el servidor y registrar controladores
 
-public static void runServer(String[] args) throws IOException {
-    HttpServer server = new HttpServer();
+    public static void runServer() throws IOException {
+        HttpServer server = new HttpServer();
 
-    // Configurar carpeta de archivos estáticos
-    server.staticfiles("webroot/public");
+        // Configurar carpeta de archivos estáticos
+        server.staticfiles("webroot/public");
 
-    // Explorar clases recibidas en args (ej: GreetingController)
-    for (String className : args) {
+        // Paquete donde buscar los controladores
+        String basePackage = "co.escuelaing.arep.microspringboot.examples";
+
         try {
-            Class<?> clazz = Class.forName(className);
-            if (clazz.isAnnotationPresent(co.escuelaing.arep.microspringboot.annotations.RestController.class)) {
-                Object controller = clazz.getDeclaredConstructor().newInstance();
+            // Carpeta física donde están las clases compiladas
+            File folder = new File("target/classes/" + basePackage.replace(".", "/"));
 
-                for (java.lang.reflect.Method method : clazz.getDeclaredMethods()) {
-                    if (method.isAnnotationPresent(co.escuelaing.arep.microspringboot.annotations.GetMapping.class)) {
-                        String path = method.getAnnotation(
-                            co.escuelaing.arep.microspringboot.annotations.GetMapping.class
-                        ).value();
+            if (folder.exists() && folder.isDirectory()) {
+                for (File file : folder.listFiles()) {
+                    if (file.getName().endsWith(".class")) {
+                        // Nombre completo de la clase
+                        String className = basePackage + "." + file.getName().replace(".class", "");
+                        Class<?> clazz = Class.forName(className);
 
-                        server.get(path, (req, res) -> {
-                            try {
-                                // Resolver parámetros
-                                Object[] params = new Object[method.getParameterCount()];
-                                Annotation[][] parameterAnnotations = method.getParameterAnnotations();
-                                Class<?>[] parameterTypes = method.getParameterTypes();
+                        // Revisar si está anotada con @RestController
+                        if (clazz.isAnnotationPresent(
+                                co.escuelaing.arep.microspringboot.annotations.RestController.class)) {
 
-                                for (int i = 0; i < parameterTypes.length; i++) {
-                                    if (parameterTypes[i] == String.class) {
-                                        String value = null;
-                                        for (Annotation ann : parameterAnnotations[i]) {
-                                            if (ann instanceof co.escuelaing.arep.microspringboot.annotations.RequestParam) {
-                                                co.escuelaing.arep.microspringboot.annotations.RequestParam rp =
-                                                    (co.escuelaing.arep.microspringboot.annotations.RequestParam) ann;
-                                                value = req.getQueryParam(rp.value());
-                                                if (value == null) value = rp.defaultValue();
+                            Object controller = clazz.getDeclaredConstructor().newInstance();
+
+                            for (java.lang.reflect.Method method : clazz.getDeclaredMethods()) {
+                                if (method.isAnnotationPresent(
+                                        co.escuelaing.arep.microspringboot.annotations.GetMapping.class)) {
+
+                                    String path = method.getAnnotation(
+                                        co.escuelaing.arep.microspringboot.annotations.GetMapping.class
+                                    ).value();
+
+                                    server.get(path, (req, res) -> {
+                                        try {
+                                            // Resolver parámetros
+                                            Object[] params = new Object[method.getParameterCount()];
+                                            Annotation[][] parameterAnnotations = method.getParameterAnnotations();
+                                            Class<?>[] parameterTypes = method.getParameterTypes();
+
+                                            for (int i = 0; i < parameterTypes.length; i++) {
+                                                if (parameterTypes[i] == String.class) {
+                                                    String value = null;
+                                                    for (Annotation ann : parameterAnnotations[i]) {
+                                                        if (ann instanceof co.escuelaing.arep.microspringboot.annotations.RequestParam) {
+                                                            co.escuelaing.arep.microspringboot.annotations.RequestParam rp =
+                                                                (co.escuelaing.arep.microspringboot.annotations.RequestParam) ann;
+                                                            value = req.getQueryParam(rp.value());
+                                                            if (value == null) value = rp.defaultValue();
+                                                        }
+                                                    }
+                                                    params[i] = value;
+                                                }
                                             }
+
+                                            Object result = method.invoke(controller, params);
+                                            return result.toString();
+                                        } catch (Exception e) {
+                                            e.printStackTrace();
+                                            return "500 Internal Server Error";
                                         }
-                                        params[i] = value;
-                                    }
+                                    });
+
+                                    System.out.println("Ruta registrada: " + path + " -> " + method.getName());
                                 }
-
-                                Object result = method.invoke(controller, params);
-                                return result.toString();
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                                return "500 Internal Server Error";
                             }
-                        });
-
-
-                        System.out.println("Ruta registrada: " + path + " -> " + method.getName());
+                        }
                     }
                 }
+            } else {
+                System.err.println("No se encontró la carpeta: " + folder.getAbsolutePath());
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        server.start(8080);
     }
-
-    server.start(8080);
-}
-
 
 
 }

@@ -8,7 +8,7 @@ body {
 
 /* Fondo principal */
 .container {
-    background-image: url('images/fondo.avif');
+    background-image: url('images/fondo.jpg');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
